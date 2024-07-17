@@ -111,3 +111,60 @@
 //   throw { message: message, errorCode: code };
 // }
 // generateError("An server error occured!", 500);
+
+// class Department {
+//   name: string;
+//   constructor(name: string) {
+//     this.name = name;
+//   }
+//   printData() {
+//     console.log("dept emp name - ", this.name);
+//   }
+// }
+
+// const accoutingDept = new Department("Accounting");
+// accoutingDept.printData();
+
+// interface Person {
+//   name: string;
+//   age: number;
+//   greet(message: string): void;
+// }
+// const person: Person = {
+//   name: "abhishek",
+//   age: 43,
+//   greet(message: string) {
+//     console.log(message + " " + this.name);
+//   },
+// };
+// person.greet("Hello");
+
+// access modifiers
+// class Person {
+//   private name: string;
+//   public age: number;
+//   constructor(name: string, age: number) {
+//     this.name = name;
+//     this.age = age;
+//   }
+// }
+// class Emplyee extends Person {
+//   private empId: number;
+//   constructor(name: string, age: number, empId: number) {
+//     super(name, age);
+//     this.empId = empId;
+//   }
+// }
+
+// class Student extends Person {
+//   private rollNo: number;
+//   constructor(name: string, age: number, rollNo: number) {
+//     super(name, age);
+//     this.rollNo = rollNo;
+//   }
+// }
+
+// const emp = new Emplyee("Abhishek Sharma", 24, 1004);
+// const std = new Student("Ranjan Sharma", 21, 1003);
+// console.log({ emp });
+// console.log({ std });
