@@ -168,3 +168,85 @@
 // const std = new Student("Ranjan Sharma", 21, 1003);
 // console.log({ emp });
 // console.log({ std });
+
+// // normal generic
+
+// function greetUser<T>(arg: T): T {
+//   return arg;
+// }
+// const res = greetUser("2");
+// const res2 = greetUser(2);
+// console.log(res);
+// console.log(res2);
+
+// array generic
+
+// function arrayGen<T>(arg: T[]): T[] {
+//   const res = arg.map((el) => {
+//     return el;
+//   });
+//   return res;
+// }
+// const res = arrayGen(["hello", "123", 234, true]);
+// // const res2 = arrayGen(true); //error
+// console.log(res);
+
+//generic array funciton
+
+// const arrowGeneric = <T>(product: T[]): T[] => {
+//   return product;
+// };
+
+// const res = arrowGeneric(["hello", "123", 234, true]);
+// console.log("product", res);
+
+// extend generic
+
+// interface Product {
+//   name: string;
+//   age: number;
+// }
+// const genericExtend = <T, G extends Product>(arg1: T, arg2: G): object => {
+//   return {
+//     arg1,
+//     ...arg2,
+//   };
+// };
+// const res2 = genericExtend("hello", { name: "abhishek", age: 43 });
+// console.log("res2", res2);
+
+// keyof constraints
+// const student = {
+//   name: "abhishek",
+//   age: 43,
+//   address: "Bhopal",
+// };
+// function getData<T extends object, U extends keyof T>(obj: T, key: U) {
+//   return obj[key];
+// }
+// const stdName = getData(student, "name");
+// console.log("name", stdName);
+
+// generic class
+// class dataStorage<T> {
+//   private data: T[] = [];
+//   public setData = (item: T) => {
+//     this.data.push(item);
+//   };
+//   public getData() {
+//     return [...this.data];
+//   }
+
+//   public removeData(item: T) {
+//     this.data.splice(this.data.indexOf(item), 1);
+//   }
+// }
+// const storageStr = new dataStorage<string>();
+// const storageNum = new dataStorage<number>();
+// storageStr.setData("hello");
+// storageStr.setData("Abhishek");
+// storageStr.setData("Sharma");
+// console.log("get data", storageStr.getData());
+// storageStr.removeData("Abhishek");
+// console.log("get data", storageStr.getData());
+console.log("first");
