@@ -249,4 +249,142 @@
 // console.log("get data", storageStr.getData());
 // storageStr.removeData("Abhishek");
 // console.log("get data", storageStr.getData());
-console.log("first");
+
+//decorators
+// function MyDecoratory(args: string) {
+//   console.log("MyDecoratory factory");
+//   return (constructor: Function) => {
+//     console.log("Decorator called", args);
+//   };
+// }
+// function MyDecoratory2(args: string) {
+//   console.log("MyDecoratory2 factory");
+//   return (constructor: Function) => {
+//     console.log("Decorator 2 called", args);
+//   };
+// }
+// @MyDecoratory("MyDecoratory")
+// @MyDecoratory2("MyDecoratory2")
+// class MyData {
+//   name: string;
+//   age: number;
+//   constructor(name: string, age: number) {
+//     this.name = name;
+//     this.age = age;
+//   }
+// }
+
+// const myData = new MyData("Abhishek", 43);
+// console.log(myData);
+
+// function myDeco(args: string) {
+//   console.log("me deco", args);
+// }
+
+// function Log(
+//   target: any,
+//   propertyName: string,
+//   descriptor: PropertyDescriptor
+// ) {
+//   const originalMethod = descriptor.value;
+
+//   descriptor.value = function (...args: any[]) {
+//     console.log(`Calling ${propertyName} with arguments:`, args);
+//     return originalMethod.apply(this, args);
+//   };
+
+//   return descriptor;
+// }
+// @myDeco("hello")
+// class Calculator {
+//   @Log
+//   add(a: number, b: number): number {
+//     return a + b;
+//   }
+// }
+
+// const calculator = new Calculator();
+// console.log(calculator.add(2, 3));
+
+interface ValidatorConfig {
+  [property: string]: {
+    [validatableProps: string]: string[];
+  };
+}
+
+const registerValidators: ValidatorConfig = {};
+
+function Required(target: any, propName: string) {
+  registerValidators[target.constructor.name] = {
+    ...registerValidators[target.constructor.name],
+    [propName]: [
+      ...(registerValidators[target.constructor.name]?.[propName] || []),
+      "required",
+    ],
+  };
+}
+
+function PositiveNumber(target: any, propName: string) {
+  registerValidators[target.constructor.name] = {
+    ...registerValidators[target.constructor.name],
+    [propName]: [
+      ...(registerValidators[target.constructor.name]?.[propName] || []),
+      "positive",
+    ],
+  };
+}
+
+function Validate(obj: any) {
+  // Use 'any' to avoid type issues
+  const objValidatorConfig = registerValidators[obj.constructor.name];
+  if (!objValidatorConfig) {
+    return true;
+  }
+  let isValid = true;
+  for (const prop in objValidatorConfig) {
+    for (const validator of objValidatorConfig[prop]) {
+      switch (validator) {
+        case "required":
+          isValid = isValid && !!obj[prop];
+          break;
+        case "positive":
+          isValid = isValid && obj[prop] > 0;
+          break;
+      }
+    }
+  }
+  return isValid;
+}
+
+class Book {
+  @Required
+  title: string;
+  @PositiveNumber
+  private _price: number;
+
+  constructor(title: string, price: number) {
+    this.title = title;
+    this._price = price;
+  }
+
+  display() {
+    console.log(this.title, this._price);
+  }
+}
+
+const formEl = document.querySelector("form")!;
+
+formEl?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const titleEl = document.querySelector("#title") as HTMLInputElement;
+  const priceEl = document.querySelector("#price") as HTMLInputElement;
+
+  const title = titleEl?.value;
+  const price = +priceEl?.value;
+
+  const courseBook = new Book(title, price);
+  if (!Validate(courseBook)) {
+    throw new Error("Invalid input");
+  }
+  console.log(courseBook);
+});
